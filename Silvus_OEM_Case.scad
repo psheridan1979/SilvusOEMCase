@@ -32,6 +32,7 @@ heat_sink_x = board_x /2;
 heat_sink_y = board_y;
 heat_sink_z = (matrice_z - box_z) / 2; 
 screw_head_diameter = screw_diameter + wall_thickness/2;
+///*
 //box without lid
 union()
 {
@@ -57,6 +58,8 @@ union()
         // led opening
         // vertical offset is arbitrary but it has to be higher than the power/data ports but near them
         translate([box_x/2,0,4]) rotate([0,90,0]) cylinder(h=wall_thickness*3,r= led_diameter/2, center = true);
+        // heat sink opening
+        translate([0,0,-box_z/2]) cube([heat_sink_x, heat_sink_y, 10], center = true);
     }
     //screw posts
     //mirroring to put one in each corner
@@ -77,17 +80,32 @@ union()
             }
         }
     }
+    //guide rails for radio
+    for (y_offset = [0:1])
+    {
+    mirror([0,y_offset,0]) translate([0,board_y/2 + wall_thickness,-board_z/2]) cube([board_x,wall_thickness,wall_thickness*2], center = true);
+    }
 }
-
+//*/
+///*
 //lid
 translate([0,0,2*box_z])
 {
-    union()
+    difference()
     {
-        cube([box_x, box_y, wall_thickness], center = true);
-            //hollow out box
-        translate([0,0,-wall_thickness]) cube([cavity_x-tolerance,cavity_y-tolerance,2*wall_thickness], center = true);
-            //remove top
+        union()
+        {
+            cube([box_x, box_y, wall_thickness], center = true);
+            translate([0,0,-wall_thickness]) cube([cavity_x-tolerance,cavity_y-tolerance,2*wall_thickness], center = true);
+            //guide rails for radio
+            for (y_offset = [0:1])
+            {
+            mirror([0,y_offset,0]) translate([0,board_y/2 + wall_thickness,-wall_thickness*2]) cube([board_x,wall_thickness,wall_thickness*2], center = true);
+            }
+            
+        }
+        // heat sink opening
+        translate([0,0,0]) cube([heat_sink_x, heat_sink_y, 10], center = true);
     }
     //screw posts
     //mirroring to put one in each corner
@@ -109,3 +127,4 @@ translate([0,0,2*box_z])
         }
     }
 }
+//*/
