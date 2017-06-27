@@ -28,39 +28,49 @@ screw_separation = 80;
 box_x = space_x;
 box_y = antenna_separation;
 box_z = space_z;
-
-difference()
+union()
 {
-	cube([box_x,box_y,box_z], center = true);
-	cube([box_x-wall_thickness*2,box_y-wall_thickness*2,box_z-wall_thickness*2], center = true); 
-	translate([0,0,-(box_z-wall_thickness)/2]) cube([box_x+1,box_y+1,wall_thickness+1],center = true);
-	//openings for power/data ports
-	for (y_offset = [0:1])
+	difference()
 	{
-		mirror([0,y_offset,0])
-		translate([-box_x/2,pow_data_port_separation/2,-space_z/8]) rotate([0,90,0]) cylinder(h=4*wall_thickness, r    = pow_data_port_radius, $fn=20, center = true);
-	}
-	//opening for led indicator
-    translate([-box_x/2,0,space_z/8]) rotate([0,90,0]) cylinder(h=4*wall_thickness, r = led_radius, $fn=20, center = true);
-	//opening for antennae
-	for (y_offset = [0:1])
-	{
-	 mirror([0,y_offset,0])
-	translate([-antenna_x_offset,box_y/2,0]) rotate([0,90,90]) cylinder(h=4*wall_thickness, r = antenna_radius, $fn=100, center = true);
+		cube([box_x,box_y,box_z], center = true);
+		cube([box_x-wall_thickness*2,box_y-wall_thickness*2,box_z-wall_thickness*2], center = true); 
+		translate([0,0,-(box_z-wall_thickness)/2]) cube([box_x+1,box_y+1,wall_thickness+1],center = true);
+		//openings for power/data ports
+		for (y_offset = [0:1])
+		{
+			mirror([0,y_offset,0])
+			translate([-box_x/2,pow_data_port_separation/2,-space_z/8]) rotate([0,90,0]) cylinder(h=4*wall_thickness, r    = pow_data_port_radius, $fn=20, center = true);
+		}
+		//opening for led indicator
+		translate([-box_x/2,0,space_z/8]) rotate([0,90,0]) cylinder(h=4*wall_thickness, r = led_radius, $fn=20, center = true);
+		//opening for antennae
+		for (y_offset = [0:1])
+		{
+		 mirror([0,y_offset,0])
+		translate([-antenna_x_offset,box_y/2,0]) rotate([0,90,90]) cylinder(h=4*wall_thickness, r = antenna_radius, $fn=100, center = true);
+		}
+		//box mounting screw holes
+		for(x_offset = [0:1]){for(y_offset = [0:1]){
+			mirror([x_offset,0,0]){ mirror([0,y_offset,0]){ translate([screw_separation/2,screw_separation/2,box_z/2]) cylinder(h=4*wall_thickness, r = screw_radius, $fn=20, center = true);}}
+		}}
+		
 	}
 	//box mounting screw holes
+	
 	for(x_offset = [0:1]){for(y_offset = [0:1]){
-		mirror([x_offset,0,0]){ mirror([0,y_offset,0]){ translate([screw_separation/2,screw_separation/2,box_z/2]) cylinder(h=4*wall_thickness, r = screw_radius, $fn=20, center = true);}}
+		mirror([x_offset,0,0]){ mirror([0,y_offset,0]){ 
+			difference()
+			{
+				translate([(box_x-2*wall_thickness)/2,(box_y-2*wall_thickness)/2,0]) cylinder(h=box_z-2*wall_thickness, r = wall_thickness, $fn=20, center = true);
+				translate([(box_x-2*wall_thickness)/2,(box_y-2*wall_thickness)/2,0]) cylinder(h=box_z, r = screw_radius, $fn=20, center = true);
+			}
+		}}
 	}}
+	//guide rails for holding radio in place
+	for(y_offset = [0:1])
+	{
+		mirror([0,y_offset,0]) translate([0,(board_y+wall_thickness+tolerance)/2,board_z/2]) cube([box_x/2,wall_thickness,wall_thickness*2],center=true);
+	}
 }
-//box mounting screw holes
-
-for(x_offset = [0:1]){for(y_offset = [0:1]){
-	mirror([x_offset,0,0]){ mirror([0,y_offset,0]){ 
-		difference()
-		{
-			translate([(box_x-2*wall_thickness)/2,(box_y-2*wall_thickness)/2,0]) cylinder(h=box_z-2*wall_thickness, r = wall_thickness, $fn=20, center = true);
-			translate([(box_x-2*wall_thickness)/2,(box_y-2*wall_thickness)/2,0]) cylinder(h=box_z, r = screw_radius, $fn=20, center = true);
-		}
-	}}
-}}
+//radio block
+//cube([board_x,board_y,board_z],center= true);
