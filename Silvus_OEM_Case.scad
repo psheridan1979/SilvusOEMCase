@@ -5,7 +5,8 @@ space_z = 45;
 board_x = 92;
 board_y = 55;
 board_z = 20;
-
+heatsink_y = 70;
+heatsink_x = 70;
 
 //bottom_heat_sink_z = ;//tbd
 //figure out whether to to trim power/data port board for height
@@ -28,6 +29,9 @@ screw_separation = 80;
 box_x = space_x;
 box_y = antenna_separation;
 box_z = space_z;
+
+//box
+///*
 union()
 {
 	difference()
@@ -55,8 +59,7 @@ union()
 		}}
 		
 	}
-	//box mounting screw holes
-	
+	//box lid screw holes
 	for(x_offset = [0:1]){for(y_offset = [0:1]){
 		mirror([x_offset,0,0]){ mirror([0,y_offset,0]){ 
 			difference()
@@ -72,5 +75,30 @@ union()
 		mirror([0,y_offset,0]) translate([0,(board_y+wall_thickness+tolerance)/2,board_z/2+wall_thickness*2]) cube([box_x/2,wall_thickness,wall_thickness*3],center=true);
 	}
 }
+//*/
 //radio block
 //cube([board_x,board_y,board_z],center= true);
+
+//top cover
+translate([0,0,-40])
+{	
+	difference()
+	{
+		union()
+		{
+			cube([box_x,box_y,wall_thickness], center = true);
+			translate([0,0,wall_thickness*1.5]) cube([box_x-wall_thickness*6, box_y-wall_thickness*6, wall_thickness*3], center = true);
+			//box lid screw holes
+		for(x_offset = [0:1]){for(y_offset = [0:1]){
+			mirror([x_offset,0,0]){ mirror([0,y_offset,0]){ 
+				difference()
+				{
+					translate([(box_x-3*wall_thickness)/2,(box_y-3*wall_thickness)/2,0]) cylinder(h=wall_thickness*1.2, r = wall_thickness*1.5, $fn=20, center = true);
+					translate([(box_x-3*wall_thickness)/2,(box_y-3*wall_thickness)/2,0]) cylinder(h=box_z, r = screw_radius, $fn=20, center = true);
+				}
+			}}
+		}}
+		}
+		cube([heatsink_x, heatsink_y, wall_thickness*7],center = true);
+	}
+}
