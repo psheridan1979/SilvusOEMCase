@@ -16,7 +16,7 @@ pow_data_port_separation = 25.5; //zero tolerance
 led_radius = 3.5;
 antenna_radius = 3.5;
 antenna_separation = 92.9;
-antenna_x_offset = 20;
+antenna_x_offset = 25;
 
 screw_radius = 1;  //tbd but 0.5 looks reasonable 
 screw_length = 10; //tbd but 10 looks reasonable
@@ -69,11 +69,6 @@ union()
 			}
 		}}
 	}}
-	//guide rails for holding radio in place
-	for(y_offset = [0:1])
-	{
-		mirror([0,y_offset,0]) translate([0,(board_y+wall_thickness+tolerance)/2,board_z/2+wall_thickness*2]) cube([box_x/2,wall_thickness,wall_thickness*3],center=true);
-	}
 }
 //*/
 //radio block
