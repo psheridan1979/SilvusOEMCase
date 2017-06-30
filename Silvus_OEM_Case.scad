@@ -82,7 +82,7 @@ translate([0,0,-40])
 		union()
 		{
 			cube([box_x,box_y,wall_thickness], center = true);
-			translate([0,0,wall_thickness*1.5]) cube([box_x-wall_thickness*6, box_y-wall_thickness*6, wall_thickness*3], center = true);
+			translate([0,0,wall_thickness*1.5]) cube([box_x-wall_thickness*7, box_y-wall_thickness*7, wall_thickness*3], center = true);
 			//box lid screw holes
 		for(x_offset = [0:1]){for(y_offset = [0:1]){
 			mirror([x_offset,0,0]){ mirror([0,y_offset,0]){ 
