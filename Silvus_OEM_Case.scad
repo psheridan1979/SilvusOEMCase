@@ -1,6 +1,6 @@
 tolerance = 0.6;
-space_x = 100;
-space_y = 100;
+space_x = 105;
+space_y = 115;
 space_z = 45;
 board_x = 92;
 board_y = 55;
@@ -18,16 +18,18 @@ antenna_radius = 3.5;
 antenna_separation = 92.9;
 antenna_x_offset = 25;
 
+anchor_screw_radius = 1.6;
 screw_radius = 1;  //tbd but 0.5 looks reasonable 
 screw_length = 10; //tbd but 10 looks reasonable
 screw_head_radius = 1; //tbd 
 ziptie_width = 4.0; //tbd but 4 looks reasonable
 wall_thickness = 2.0;
 
-screw_separation = 80;
+screw_separation_x = 80;
+screw_separation_y = 105;
 
 box_x = space_x;
-box_y = antenna_separation;
+box_y = space_y;
 box_z = space_z;
 
 //box
@@ -55,7 +57,7 @@ union()
 		}
 		//box mounting screw holes
 		for(x_offset = [0:1]){for(y_offset = [0:1]){
-			mirror([x_offset,0,0]){ mirror([0,y_offset,0]){ translate([screw_separation/2,screw_separation/2,box_z/2]) cylinder(h=4*wall_thickness, r = screw_radius, $fn=20, center = true);}}
+			mirror([x_offset,0,0]){ mirror([0,y_offset,0]){ translate([screw_separation_x/2,screw_separation_y/2,box_z/2]) cylinder(h=4*wall_thickness, r = screw_radius, $fn=20, center = true);}}
 		}}
 		
 	}
